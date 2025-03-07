@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormat;
     private RecyclerView transactionList;
     private TransactionAdapter transactionAdapter;
+    private TextView incomeVal,expenseVal,totalVal;
     private List<Transaction> transactions=new ArrayList<>();
 
 
@@ -76,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
                 openAddTransactionBottomSheet();
             }
         });
+        incomeVal=findViewById(R.id.incomeVal);
+        expenseVal=findViewById(R.id.expenseVal);
+        totalVal=findViewById(R.id.totalVal);
+
     }
     private void moveToLogin(){
         btnlogin=findViewById(R.id.loginButton);
@@ -95,15 +100,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTransactionAdded(Transaction transaction) {
                 transactions.add(transaction);
+                updateTransactionSummary();
                 transactionAdapter.notifyItemInserted(transactions.size()-1);
             }
         });
     }
 
+    private void updateTransactionSummary(){
+        double income=0.0, expense=0.0;
 
+        for(Transaction transaction: transactions){
+            double amount= Double.parseDouble(transaction.getAmount());
+            if(transaction.getType().equalsIgnoreCase("Income")){
+                income+=amount;
+            } else if (transaction.getType().equalsIgnoreCase("Expense")) {
+                expense+=amount;
 
+            }
 
+        }
+        double total=income-expense;
 
+        incomeVal.setText(String.format("%.2f",income));
+        expenseVal.setText(String.format("%.2f",expense));
+        totalVal.setText(String.format("%.2f",total));
+
+    }
 
 
 }

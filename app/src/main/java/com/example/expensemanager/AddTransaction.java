@@ -58,7 +58,7 @@ public class AddTransaction{
                 Toast.makeText(context,"Please fill all the fileds",Toast.LENGTH_SHORT).show();
                 return;
             }
-            Transaction transaction=new Transaction(category,date,amount,mode);
+            Transaction transaction=new Transaction(category,date,amount,mode,transactionType);
             listener.onTransactionAdded(transaction);
             dialog.dismiss();
         });
